@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add joke</title>
+    <script src="https://cdn.tailwindcss.com"></script> 
+</head>
+<body class="bg-black h-screen flex flex-col items-center justify-center">
+    <div class="bg-white shadow-md rounded-lg p-6 w-1/3">
+        <h1 class="text-2xl font-bold text-center mb-4">Write your Joke here</h1>
+        <form action="/submit" method="POST" class="flex flex-col">
+            <input type="text" name="userInput" placeholder="Enter a joke" required class="p-2 border border-gray-300 rounded mb-4">
+            <button type="submit" class="bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

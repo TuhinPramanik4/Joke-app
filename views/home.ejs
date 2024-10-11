@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Joke App</title>
+</head>
+<body class="h-screen flex flex-col">
+    <nav class="bg-gray-700 text-white flex items-center justify-center h-14 gap-20">
+        <button 
+            onclick="window.location.href='/submit'" 
+            class="bg-gray-500 px-4 py-2 rounded hover:bg-blue-600"
+            aria-label="Add a new joke"
+        >
+            ADD JOKE
+        </button>
+        <button 
+            onclick="fetchCustomJokes()" 
+            class="bg-gray-500 px-4 py-2 rounded hover:bg-blue-600"
+            aria-label="See custom jokes"
+        >
+            SEE CUSTOM JOKES
+        </button>
+    </nav>
+
+    <div class="flex-1 bg-black text-white flex items-center justify-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% topCreators.forEach(creator => { %>
+            <div class="bg-white text-black rounded-lg p-2">
+                <img src="<%= creator.pictureUrl %>" alt="<%= creator.name %>" class="w-full h-40 mb-2 rounded">
+                <h2 class="text-xl font-bold"><%= creator.name %></h2>
+                <a href="<%= creator.youtubeLink %>" target="_blank" class="text-blue-500">YouTube Channel</a>
+                <p class="text-gray-700 mt-2">Votes: <%= creator.votes %></p>
+            </div>
+            <% }) %>
+        </div>
+        
+        <div class="gap-5 flex flex-col items-center justify-center absolute bottom-0">
+            <button onclick="window.location.href='./submitCreator.ejs'" class="bg-gray-500 px-4 py-2 rounded hover:bg-blue-600">
+                Add creator
+            </button>
+            <button onclick="window.location.href='./index'" class="bg-gray-500 px-4 py-2 rounded hover:bg-blue-600">
+                See all creators
+            </button>
+        </div>
+    </div>
+    <div id="jokeModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 hidden flex justify-center items-center">
+        <div class="bg-white rounded-lg p-6 w-80">
+            <h2 id="jokeContent" class="mb-4"></h2>
+            <div class="flex justify-between">
+                <button id="goodJokeBtn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Good Joke</button>
+                <button id="badJokeBtn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Bad Joke</button>
+            </div>
+            <button class="mt-4 text-gray-500 underline" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        async function fetchCustomJokes() {
+            try {
+                const response = await fetch('/fetch-jokes');
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const joke = await response.json(); 
+                document.getElementById('jokeContent').textContent = joke.content; 
+                document.getElementById('jokeModal').classList.remove('hidden'); 
+
+               
+                document.getElementById('goodJokeBtn').onclick = function() {
+                    alert('Thank you for your feedback!');
+                    closeModal();
+                };
+
+                document.getElementById('badJokeBtn').onclick = function() {
+                    alert('Thanks! We will try to improve.');
+                    closeModal();
+                };
+
+            } catch (error) {
+                alert('Failed to fetch custom jokes');
+                console.error(error);
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('jokeModal').classList.add('hidden'); 
+        }
+    </script>
+</body>
+</html>
