@@ -10,7 +10,7 @@ require('dotenv').config();
 const app = express();
 
 
-mongoose.connect('mongodb://localhost:27017/blogkaro').then(()=>console.log("MongoDB connected"));
+mongoose.connect('Url of the data base ').then(()=>console.log("MongoDB connected"));
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
